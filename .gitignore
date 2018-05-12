@@ -1,0 +1,9 @@
+/**/vendor/
+/.idea
+.DS_Store
+test/unit/coverage
+test/e2e/reports
+selenium-debug.log
+.env
+phpunit.dusk.xml
+composer.lock
