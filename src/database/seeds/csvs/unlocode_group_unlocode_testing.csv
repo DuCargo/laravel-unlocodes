@@ -1,0 +1,40 @@
+Belgium;BE;ANT
+Europe;BE;ANT
+Multimodal Locations;BE;ANT
+Airports;CN;SHA
+Asia;CN;SHA
+China;CN;SHA
+Ports;CN;SHA
+Postal Offices;CN;SHA
+Rail Terminals;CN;SHA
+Road Terminals;CN;SHA
+Seaports;CN;SHA
+Airports;NL;RTM
+Europe;NL;RTM
+Netherlands;NL;RTM
+Ports;NL;RTM
+Postal Offices;NL;RTM
+Rail Terminals;NL;RTM
+Road Terminals;NL;RTM
+Rotterdam / Antwerpen;NL;RTM
+Seaports;NL;RTM
+Airports;DE;BRV
+Bremen (HB), DE;DE;BRV
+Europe;DE;BRV
+Germany;DE;BRV
+Ports;DE;BRV
+Rail Terminals;DE;BRV
+Road Terminals;DE;BRV
+Seaports;DE;BRV
+Airports;US;HOU
+North America;US;HOU
+Ports;US;HOU
+Postal Offices;US;HOU
+Seaports;US;HOU
+Texas (TX), US;US;HOU
+United States;US;HOU
+Airports;US;AUS
+North America;US;AUS
+Road Terminals;US;AUS
+Texas (TX), US;US;AUS
+United States;US;AUS

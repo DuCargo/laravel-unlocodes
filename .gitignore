@@ -7,3 +7,5 @@ selenium-debug.log
 .env
 phpunit.dusk.xml
 composer.lock
+*.iml
+coverage*
