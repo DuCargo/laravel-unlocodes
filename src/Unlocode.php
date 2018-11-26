@@ -36,6 +36,14 @@ class Unlocode extends Model
     public $incrementing = false;
 
     /**
+     * @return string The 5-letter UNLOCODE
+     */
+    public function getUnlocodeAttribute()
+    {
+        return $this->countrycode . $this->placecode;
+    }
+
+    /**
      * Set the keys for a save update query using countrycode and placecode.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
