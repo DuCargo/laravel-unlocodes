@@ -10,8 +10,9 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * Class Unlocode
+ *
  * @package Dc\Unlocodes
- * @mixin \Illuminate\Database\Query\Builder
+ * @mixin   \Illuminate\Database\Query\Builder
  */
 class Unlocode extends Model
 {
@@ -46,14 +47,17 @@ class Unlocode extends Model
     /**
      * Set the keys for a save update query using countrycode and placecode.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function setKeysForSaveQuery(Builder $query)
     {
         $query->where($this->getKeyName(), '=', $this->getKeyForSaveQuery())
-            ->where($this->primaryKey2, '=',
-                $this->original[$this->primaryKey2] ?? $this->getAttribute($this->primaryKey2));
+            ->where(
+                $this->primaryKey2,
+                '=',
+                $this->original[$this->primaryKey2] ?? $this->getAttribute($this->primaryKey2)
+            );
 
         return $query;
     }
@@ -61,7 +65,8 @@ class Unlocode extends Model
     /**
      * The groups that an unlocode belongs to
      */
-    public function groups() {
+    public function groups()
+    {
         $countryCode = $this->countrycode;
         $placeCode = $this->placecode;
         // FIXME Resulting query is suboptimal:
@@ -71,11 +76,14 @@ class Unlocode extends Model
         // inner join "unlocode_group_unlocodes" as "ugu" on "ugu"."groupname" = "unlocode_groups"."name" and "ugu"."countrycode" = "XX" and "ugu"."placecode" = "XXX"
         // where "unlocode_group_unlocodes"."countrycode" = "XX"`
         return $this->belongsToMany(UnlocodeGroup::class, 'unlocode_group_unlocodes', 'countrycode', 'groupname')
-            ->join('unlocode_group_unlocodes AS ugu', function (JoinClause $join) use ($countryCode, $placeCode) {
-                $join
-                    ->on('ugu.groupname', '=', 'unlocode_groups.name')
-                    ->on('ugu.countrycode', '=', $countryCode)
-                    ->on('ugu.placecode', '=', $placeCode);
-            });
+            ->join(
+                'unlocode_group_unlocodes AS ugu',
+                function (JoinClause $join) use ($countryCode, $placeCode) {
+                    $join
+                        ->on('ugu.groupname', '=', 'unlocode_groups.name')
+                        ->on('ugu.countrycode', '=', $countryCode)
+                        ->on('ugu.placecode', '=', $placeCode);
+                }
+            );
     }
 }

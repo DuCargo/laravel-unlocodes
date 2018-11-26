@@ -15,20 +15,23 @@ class CreateUnlocodeGroupsTable extends Migration
     public function up()
     {
         // SQL:
-        // name 		VARCHAR( 80 ) NOT NULL,
-        // type 		VARCHAR( 60 ) DEFAULT NULL,
+        // name VARCHAR( 80 ) NOT NULL,
+        // type VARCHAR( 60 ) DEFAULT NULL,
         // description TEXT DEFAULT NULL,
         // PRIMARY KEY (name)
 
-        Schema::create('unlocode_groups', function (Blueprint $table) {
-            $table->string('name', 80);
-            $table->string('type', 60)->nullable();
-            $table->text('description')->nullable();
+        Schema::create(
+            'unlocode_groups',
+            function (Blueprint $table) {
+                $table->string('name', 80);
+                $table->string('type', 60)->nullable();
+                $table->text('description')->nullable();
 
-            $table->timestamps();
+                $table->timestamps();
 
-            $table->primary('name');
-        });
+                $table->primary('name');
+            }
+        );
 
         Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodeGroupsTableSeeder'));
     }

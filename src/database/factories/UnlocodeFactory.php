@@ -1,7 +1,9 @@
 <?php
 
-$factory->define(\Dc\Unlocodes\Unlocode::class, function (Faker\Generator $faker) {
-    return [
+$factory->define(
+    \Dc\Unlocodes\Unlocode::class,
+    function (Faker\Generator $faker) {
+        return [
         'countrycode' => 'NL',
         'placecode' => 'RTM',
         'name' => 'Rotterdam',
@@ -11,5 +13,6 @@ $factory->define(\Dc\Unlocodes\Unlocode::class, function (Faker\Generator $faker
         'status' => '',
         'date' => '',
         'IATA' => '',
-    ];
-});
+        ];
+    }
+);

@@ -11,13 +11,13 @@ class UnlocodeHelperTest extends TestCase
     /** @test */
     function spread_unlocode_throws_exception_on_invalid_format() {
         $this->expectException(\InvalidArgumentException::class);
-        UnlocodeHelper::spread_unlocode('ABCDEF');
+        UnlocodeHelper::spreadUnlocode('ABCDEF');
     }
 
     /** @test */
     function spread_unlocode_spreads_unlocode()
     {
-        $unlocode = UnlocodeHelper::spread_unlocode('NLRTM');
+        $unlocode = UnlocodeHelper::spreadUnlocode('NLRTM');
         $this->assertEquals(['NL', 'RTM'], $unlocode);
     }
 

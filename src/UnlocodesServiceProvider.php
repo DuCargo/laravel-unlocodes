@@ -18,23 +18,28 @@ class UnlocodesServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
-        Route::bind('unlocode', function ($value) {
-            try {
-                [$countrycode, $placecode] = UnlocodeHelper::spread_unlocode($value);
-                $value = \Cache::rememberForever(
-                    UnlocodeHelper::cacheKey($countrycode, $placecode),
-                    function () use ($countrycode, $placecode) {
-                        return Unlocode::where([
-                            'countrycode' => $countrycode,
-                            'placecode' => $placecode,
-                        ])->firstOrFail();
-                    }
-                );
-                return $value;
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 400);
+        Route::bind(
+            'unlocode',
+            function ($value) {
+                try {
+                    [$countrycode, $placecode] = UnlocodeHelper::spreadUnlocode($value);
+                    $value = \Cache::rememberForever(
+                        UnlocodeHelper::cacheKey($countrycode, $placecode),
+                        function () use ($countrycode, $placecode) {
+                            return Unlocode::where(
+                                [
+                                'countrycode' => $countrycode,
+                                'placecode' => $placecode,
+                                ]
+                            )->firstOrFail();
+                        }
+                    );
+                    return $value;
+                } catch (\Exception $e) {
+                    return response()->json(['error' => $e->getMessage()], 400);
+                }
             }
-        });
+        );
     }
 
     /**
@@ -55,7 +60,7 @@ class UnlocodesServiceProvider extends ServiceProvider
     {
         // Load the helpers in src/helpers/
         if (file_exists($file = __DIR__ . '/helpers/UnlocodeHelper.php')) {
-            require_once $file;
+            include_once $file;
         }
     }
 }

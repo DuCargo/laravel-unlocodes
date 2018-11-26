@@ -15,7 +15,8 @@ class UnlocodeController extends Controller
 
     /**
      * Display a listing of UNLOCodes.
-     * GET	/unlocodes	index	unlocode.index
+     * GET    /unlocodes    index    unlocode.index
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
@@ -25,8 +26,9 @@ class UnlocodeController extends Controller
 
     /**
      * Display the specified UNLOCode.
-     * GET	/unlocodes/{unlocode}	show	unlocode.show
-     * @param Unlocode $unlocode The unlocode object, resolved by route/model binding
+     * GET    /unlocodes/{unlocode}    show    unlocode.show
+     *
+     * @param  Unlocode $unlocode The unlocode object, resolved by route/model binding
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(Unlocode $unlocode)
@@ -36,20 +38,24 @@ class UnlocodeController extends Controller
 
     /**
      * Display the specified UNLOCode.
-     * GET	/unlocodes/search/{term}	search	unlocodes.search
-     * @param string $term
+     * GET    /unlocodes/search/{term}    search    unlocodes.search
+     *
+     * @param  string $term
      * @return \Illuminate\Http\JsonResponse
      */
     public function search(string $term)
     {
-        $value = \Cache::remember("unlocode_search_{$term}", 5,
-            function() use ($term) {
+        $value = \Cache::remember(
+            "unlocode_search_{$term}",
+            5,
+            function () use ($term) {
                 $likeTerm = "%{$term}%";
                 return Unlocode::where('name', 'LIKE', $likeTerm)
                     ->orWhere('countrycode', 'LIKE', $likeTerm)
                     ->orWhere('placecode', 'LIKE', $likeTerm)
                     ->get($this->APIColumns);
-            });
+            }
+        );
         return $value;
     }
 
@@ -57,7 +63,7 @@ class UnlocodeController extends Controller
      * Store a newly created UNLOCode in storage.
      * POST    /unlocode    store    unlocode.store
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
@@ -66,14 +72,17 @@ class UnlocodeController extends Controller
 
         try {
             // Create the unlocode
-            $result = Unlocode::create(array_merge(
-                    request([
+            $result = Unlocode::create(
+                array_merge(
+                    request(
+                        [
                         'countrycode',
                         'placecode',
                         'subdivision',
                         'name',
                         'longitude',
-                        'latitude']),
+                        'latitude']
+                    ),
                     ['date' => date('ym')]
                 )
             );
@@ -87,8 +96,9 @@ class UnlocodeController extends Controller
     /**
      * Update the specified resource in storage.
      * PUT/PATCH    /unlocode/{unlocode}    update    unlocode.update
+     *
      * @param  Unlocode $unlocode The unlocode object, resolved by route/model binding
-     * @param Request $request
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Unlocode $unlocode, Request $request)
@@ -98,14 +108,16 @@ class UnlocodeController extends Controller
         try {
             $success =
                 $unlocode->update(
-                    request([
+                    request(
+                        [
                         'countrycode',
                         'placecode',
                         'subdivision',
                         'name',
                         'longitude',
                         'latitude'
-                    ])
+                        ]
+                    )
                 );
             return response()->json($success, 204);
         } catch (\Exception $e) {
@@ -116,7 +128,8 @@ class UnlocodeController extends Controller
     /**
      * Remove the specified resource from storage.
      * DELETE    /unlocode/{unlocode}    destroy    unlocode.destroy
-     * @param Unlocode $unlocode The unlocode object, resolved by route/model binding
+     *
+     * @param  Unlocode $unlocode The unlocode object, resolved by route/model binding
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception If primary key was somehow not defined for the model during delete
      */
@@ -126,5 +139,4 @@ class UnlocodeController extends Controller
         $success = $unlocode->delete() === true;
         return \Response::json($success);
     }
-
 }

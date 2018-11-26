@@ -6,9 +6,12 @@ use Flynsarmy\CsvSeeder\CsvSeeder;
 use frictionlessdata\datapackage\Package;
 use frictionlessdata\datapackage\Resources\DefaultResource;
 
-class UnlocodeDatapackageSeeder extends CsvSeeder {
+class UnlocodeDatapackageSeeder extends CsvSeeder
+{
 
-    /** @var DefaultResource */
+    /**
+     * @var DefaultResource
+     */
     private $resource;
 
     public function __construct()
@@ -30,7 +33,7 @@ class UnlocodeDatapackageSeeder extends CsvSeeder {
 
         foreach ($this->resource as $rowStr) {
             // Offset the specified number of rows
-            if ( $offset > 0 ) {
+            if ($offset > 0) {
                 $offset--;
                 continue;
             }
@@ -41,31 +44,28 @@ class UnlocodeDatapackageSeeder extends CsvSeeder {
             }
 
             // No mapping specified - grab the first CSV row and use it
-            if ( !$mapping )
-            {
+            if (!$mapping) {
                 $mapping = $row;
                 $mapping[0] = $this->stripUtf8Bom($mapping[0]);
 
                 // skip csv columns that don't exist in the database
-                foreach($mapping  as $index => $fieldname){
-                    if (!DB::getSchemaBuilder()->hasColumn($this->table, $fieldname)){
+                foreach ($mapping as $index => $fieldname) {
+                    if (!DB::getSchemaBuilder()->hasColumn($this->table, $fieldname)) {
                         array_pull($mapping, $index);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $row = $this->readRow($row, $mapping);
 
                 // insert only non-empty rows from the csv file
-                if ( !$row )
+                if (!$row) {
                     continue;
+                }
 
                 $data[$row_count] = $row;
 
                 // Chunk size reached, insert
-                if ( ++$row_count == $this->insert_chunk_size )
-                {
+                if (++$row_count == $this->insert_chunk_size) {
                     $this->insert($data);
                     $row_count = 0;
                     // clear the data array explicitly when it was inserted so
@@ -78,8 +78,9 @@ class UnlocodeDatapackageSeeder extends CsvSeeder {
 
         // Insert any leftover rows
         //check if the data array explicitly if there are any values left to be inserted, if insert them
-        if ( count($data)  )
+        if (count($data)) {
             $this->insert($data);
+        }
 
         return $data;
     }
@@ -107,6 +108,7 @@ class UnlocodeDatapackageSeeder extends CsvSeeder {
 
     /**
      * Reads the data package schema to discover the index at which our columns can be found
+     *
      * @param DefaultResource $resource
      */
     private function discoverMappings($resource)

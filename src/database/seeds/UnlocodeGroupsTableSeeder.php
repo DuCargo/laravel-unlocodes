@@ -5,7 +5,8 @@ namespace Dc\Unlocodes\Seeds;
 use Flynsarmy\CsvSeeder\CsvSeeder;
 use Illuminate\Support\Facades\DB;
 
-class UnlocodeGroupsTableSeeder extends CsvSeeder {
+class UnlocodeGroupsTableSeeder extends CsvSeeder
+{
 
     public function __construct()
     {

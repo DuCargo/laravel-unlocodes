@@ -7,6 +7,7 @@ use Illuminate\Database\Query\JoinClause;
 
 /**
  * Class UnlocodeGroup
+ *
  * @package Dc\Unlocodes
  */
 class UnlocodeGroup extends Model
@@ -20,9 +21,9 @@ class UnlocodeGroup extends Model
     /**
      * Define a one-to-many relationship with a custom foreign key.
      *
-     * @param  string  $related
-     * @param  string  $foreignKey
-     * @param  string  $localKey
+     * @param  string $related
+     * @param  string $foreignKey
+     * @param  string $localKey
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function hasMany($related, $foreignKey = null, $localKey = null)
@@ -32,21 +33,27 @@ class UnlocodeGroup extends Model
         $localKey = $localKey ?: $this->getKeyName();
 
         return $this->newHasMany(
-            $instance->newQuery(), $this, 'ugu.groupname', $localKey
+            $instance->newQuery(),
+            $this,
+            'ugu.groupname',
+            $localKey
         );
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function unlocodes() {
+    public function unlocodes()
+    {
         $groupname = $this->name;
         return $this->hasMany(Unlocode::class)
-            ->join('unlocode_group_unlocodes AS ugu', function (JoinClause $join) use ($groupname) {
-                $join->on('ugu.countrycode', '=', 'unlocodes.countrycode')
-                    ->on('ugu.placecode', '=', 'unlocodes.placecode')
-                    ->on('ugu.groupname', '=', $groupname);
-            });
-
+            ->join(
+                'unlocode_group_unlocodes AS ugu',
+                function (JoinClause $join) use ($groupname) {
+                    $join->on('ugu.countrycode', '=', 'unlocodes.countrycode')
+                        ->on('ugu.placecode', '=', 'unlocodes.placecode')
+                        ->on('ugu.groupname', '=', $groupname);
+                }
+            );
     }
 }
