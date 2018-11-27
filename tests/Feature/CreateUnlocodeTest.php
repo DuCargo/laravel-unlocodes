@@ -52,6 +52,29 @@ class CreateUnlocodeTest extends UnlocodeTestCase
     }
 
     /** @test */
+    function cannot_store_existing()
+    {
+        // Given an unlocode already exists
+        factory(Unlocode::class)->create([
+            'countrycode' => 'QQ',
+            'placecode' => 'QQQ',
+        ]);
+        // When we try to create the unlocode again
+        $response = $this->createUnlocode([
+            'countrycode' => 'QQ',
+            'placecode' => 'QQQ',
+            'name' => 'Test code',
+            'subdivision' => '01',
+            'longitude' => 52.2,
+            'latitude' => -0.2,
+        ]);
+        // Then we should get an error
+        $response->assertStatus(422);
+        $this->assertArrayHasKey('message', $response->json(), "Expected message in error response");
+        $this->assertContains('QQQQQ', $response->json()['message'], "Expected unlocode in message");
+    }
+
+    /** @test */
     function countrycode_is_required()
     {
         // When we create an unlocode without specifying countrycode

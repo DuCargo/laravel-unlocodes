@@ -89,7 +89,12 @@ class UnlocodeController extends Controller
 
             return response()->json($result, 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
+            \Log::error($e->getMessage());
+            $code = request(['countrycode', 'placecode']);
+            return response()->json([
+                'message' => 'Failed to create unlocode ' . implode('', $code),
+                'debug' => \App::environment(['production']) ? $e->getCode() : $e->getMessage(),
+            ], 422);
         }
     }
 
@@ -121,7 +126,12 @@ class UnlocodeController extends Controller
                 );
             return response()->json($success, 204);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
+            \Log::error($e->getMessage());
+            $code = request(['countrycode', 'placecode']);
+            return response()->json([
+                'message' => 'Failed to update unlocode ' . implode('', $code),
+                'debug' => \App::environment(['production']) ? $e->getCode() : $e->getMessage(),
+            ], 422);
         }
     }
 

@@ -466,4 +466,29 @@ class UpdateUnlocodeTest extends UnlocodeTestCase
         $this->assertValidationError($response, 'latitude', 1);
     }
 
+    /** @test */
+    function cannot_update_to_existing()
+    {
+        // Given two unlocodes exist
+        factory(Unlocode::class)->create([
+            'countrycode' => 'PP',
+            'placecode' => 'QQQ',
+            'name' => 'Pest coder',
+        ]);
+        factory(Unlocode::class)->create([
+            'countrycode' => 'QQ',
+            'placecode' => 'QQQ',
+            'name' => 'Test coder',
+        ]);
+        // When we try to update one to the other
+        $response = $this->updateUnlocode('PPQQQ', [
+            'countrycode' => 'QQ',
+            'placecode' => 'QQQ',
+            'name' => 'Test coder',
+        ]);
+        // Then we should get an error
+        $response->assertStatus(422);
+        $this->assertArrayHasKey('message', $response->json(), "Expected message in error response");
+        $this->assertContains('QQQQQ', $response->json()['message'], "Expected unlocode in message");
+    }
 }
