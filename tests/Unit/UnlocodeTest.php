@@ -51,12 +51,18 @@ class UnlocodeTest extends TestCase
     /** @test */
     function unlocode_belongs_to_groups()
     {
-        \DB::enableQueryLog();
         // Given groups have been seeded and we create an unlocode for NLRTM
         $unlocode = factory(Unlocode::class)->create();
         // When we retrieve the groups
         $groups = $unlocode->groups;
         // They exist
         $this->assertNotEmpty($groups);
+    }
+
+    /** @test */
+    function unlocode_has_unlocode()
+    {
+        $unlocode = factory(Unlocode::class)->create();
+        $this->assertEquals('NLRTM', $unlocode->unlocode);
     }
 }

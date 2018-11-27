@@ -9,3 +9,4 @@ phpunit.dusk.xml
 composer.lock
 *.iml
 coverage*
+clover_html*
