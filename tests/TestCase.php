@@ -43,9 +43,7 @@ class TestCase extends TestBenchTestCase
     protected function assertValidationError($response, $fields)
     {
         $response->assertStatus(422);
-        if (is_string($fields)) {
-            $fields = [$fields];
-        }
+        $fields = array_wrap($fields);
         foreach ($fields as $field) {
             $this->assertArrayHasKey($field, $response->json()['errors'], "Expected \"{$field}\" in error response");
         }

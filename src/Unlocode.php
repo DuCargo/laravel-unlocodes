@@ -70,11 +70,11 @@ class Unlocode extends Model
         $countryCode = $this->countrycode;
         $placeCode = $this->placecode;
         // FIXME Resulting query is suboptimal:
-        // select "unlocode_groups".*, "unlocode_group_unlocodes"."countrycode" as "pivot_countrycode", "unlocode_group_unlocodes"."groupname" as "pivot_groupname"
-        // from "unlocode_groups"
-        // inner join "unlocode_group_unlocodes" on "unlocode_groups"."name" = "unlocode_group_unlocodes"."groupname"
-        // inner join "unlocode_group_unlocodes" as "ugu" on "ugu"."groupname" = "unlocode_groups"."name" and "ugu"."countrycode" = "XX" and "ugu"."placecode" = "XXX"
-        // where "unlocode_group_unlocodes"."countrycode" = "XX"`
+        // SELECT "unlocode_groups".*, "unlocode_group_unlocodes"."countrycode" as "pivot_countrycode", "unlocode_group_unlocodes"."groupname" as "pivot_groupname"
+        //   FROM "unlocode_groups"
+        //   INNER JOIN "unlocode_group_unlocodes" on "unlocode_groups"."name" = "unlocode_group_unlocodes"."groupname"
+        //   INNER JOIN "unlocode_group_unlocodes" as "ugu" on "ugu"."groupname" = "unlocode_groups"."name" and "ugu"."countrycode" = "XX" and "ugu"."placecode" = "XXX"
+        //   WHERE "unlocode_group_unlocodes"."countrycode" = "XX"`
         return $this->belongsToMany(UnlocodeGroup::class, 'unlocode_group_unlocodes', 'countrycode', 'groupname')
             ->join(
                 'unlocode_group_unlocodes AS ugu',

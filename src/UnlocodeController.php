@@ -11,7 +11,17 @@ class UnlocodeController extends Controller
 {
     use ValidatesRequests;
 
-    public $APIColumns = ['name','countrycode','subdivision','placecode','longitude','latitude','status','date','IATA'];
+    public $APIColumns = [
+        'name',
+        'countrycode',
+        'subdivision',
+        'placecode',
+        'longitude',
+        'latitude',
+        'status',
+        'date',
+        'IATA',
+    ];
 
     /**
      * Display a listing of UNLOCodes.
@@ -76,12 +86,13 @@ class UnlocodeController extends Controller
                 array_merge(
                     request(
                         [
-                        'countrycode',
-                        'placecode',
-                        'subdivision',
-                        'name',
-                        'longitude',
-                        'latitude']
+                            'countrycode',
+                            'placecode',
+                            'subdivision',
+                            'name',
+                            'longitude',
+                            'latitude',
+                        ]
                     ),
                     ['date' => date('ym')]
                 )
@@ -103,7 +114,7 @@ class UnlocodeController extends Controller
      * PUT/PATCH    /unlocode/{unlocode}    update    unlocode.update
      *
      * @param  Unlocode $unlocode The unlocode object, resolved by route/model binding
-     * @param  Request  $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Unlocode $unlocode, Request $request)
@@ -115,12 +126,12 @@ class UnlocodeController extends Controller
                 $unlocode->update(
                     request(
                         [
-                        'countrycode',
-                        'placecode',
-                        'subdivision',
-                        'name',
-                        'longitude',
-                        'latitude'
+                            'countrycode',
+                            'placecode',
+                            'subdivision',
+                            'name',
+                            'longitude',
+                            'latitude',
                         ]
                     )
                 );

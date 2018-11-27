@@ -23,7 +23,8 @@ class CreateUnlocodeTest extends UnlocodeTestCase
     }
 
     /** @test */
-    function unlocodes_can_be_seeded() {
+    function unlocodes_can_be_seeded()
+    {
         $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodeDatapackageSeeder::class]);
         $this->assertLessThanOrEqual(0, $result);
         $this->assertNotEmpty(Unlocode::where('countrycode', 'ZW'));
