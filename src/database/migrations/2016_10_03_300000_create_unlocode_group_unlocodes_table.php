@@ -25,18 +25,17 @@ class CreateUnlocodeGroupUnlocodesTable extends Migration
         Schema::create(
             'unlocode_group_unlocodes',
             function (Blueprint $table) {
-                $table->string('groupname', 80)->nullable();
-                $table->string('countrycode', 2)->nullable();
-                $table->string('placecode', 3)->nullable();
+                $table->string('groupname', 80);
+                $table->string('unlocode', 5);
 
                 $table->timestamps();
 
-                $table->primary(['groupname', 'countrycode', 'placecode']);
+                $table->primary(['groupname', 'unlocode']);
+                $table->foreign('unlocode')
+                    ->references('unlocode')->on('unlocodes')
+                    ->onDelete('cascade')->onUpdate('cascade');
                 $table->foreign('groupname')
                     ->references('name')->on('unlocode_groups')
-                    ->onDelete('cascade')->onUpdate('cascade');
-                $table->foreign(['countrycode', 'placecode'])
-                    ->references(['countrycode', 'placecode'])->on('unlocodes')
                     ->onDelete('cascade')->onUpdate('cascade');
             }
         );

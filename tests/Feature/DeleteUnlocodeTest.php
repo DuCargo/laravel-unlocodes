@@ -41,4 +41,20 @@ class DeleteUnlocodeTest extends UnlocodeTestCase
         // Then we should get a 404 response
         $response->assertNotFound();
     }
+
+    /**
+     * Cache clear is tested here in a Feature test because the route binding does the caching
+     * @test
+     */
+    function cache_is_cleared_after_delete()
+    {
+        // Given we have a unlocode and it's cached
+        $unlocode = factory(Unlocode::class)->create();
+        $this->json('GET', "/api/unlocodes/{$unlocode->unlocode}");
+        $this->assertTrue(\Cache::has(UnlocodeHelper::cacheKey($unlocode)));
+        // When we delete it
+        $this->json('DELETE', "/api/unlocodes/{$unlocode->unlocode}");
+        // Then the cache is cleared
+        $this->assertFalse(\Cache::has(UnlocodeHelper::cacheKey($unlocode)));
+    }
 }

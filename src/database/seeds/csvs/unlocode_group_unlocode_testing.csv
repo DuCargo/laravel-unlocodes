@@ -1,40 +1,40 @@
-Belgium;BE;ANT
-Europe;BE;ANT
-Multimodal Locations;BE;ANT
-Airports;CN;SHA
-Asia;CN;SHA
-China;CN;SHA
-Ports;CN;SHA
-Postal Offices;CN;SHA
-Rail Terminals;CN;SHA
-Road Terminals;CN;SHA
-Seaports;CN;SHA
-Airports;NL;RTM
-Europe;NL;RTM
-Netherlands;NL;RTM
-Ports;NL;RTM
-Postal Offices;NL;RTM
-Rail Terminals;NL;RTM
-Road Terminals;NL;RTM
-Rotterdam / Antwerpen;NL;RTM
-Seaports;NL;RTM
-Airports;DE;BRV
-Bremen (HB), DE;DE;BRV
-Europe;DE;BRV
-Germany;DE;BRV
-Ports;DE;BRV
-Rail Terminals;DE;BRV
-Road Terminals;DE;BRV
-Seaports;DE;BRV
-Airports;US;HOU
-North America;US;HOU
-Ports;US;HOU
-Postal Offices;US;HOU
-Seaports;US;HOU
-Texas (TX), US;US;HOU
-United States;US;HOU
-Airports;US;AUS
-North America;US;AUS
-Road Terminals;US;AUS
-Texas (TX), US;US;AUS
-United States;US;AUS
+Belgium;BEANT
+Europe;BEANT
+Multimodal Locations;BEANT
+Airports;CNSHA
+Asia;CNSHA
+China;CNSHA
+Ports;CNSHA
+Postal Offices;CNSHA
+Rail Terminals;CNSHA
+Road Terminals;CNSHA
+Seaports;CNSHA
+Airports;NLRTM
+Europe;NLRTM
+Netherlands;NLRTM
+Ports;NLRTM
+Postal Offices;NLRTM
+Rail Terminals;NLRTM
+Road Terminals;NLRTM
+Rotterdam / Antwerpen;NLRTM
+Seaports;NLRTM
+Airports;DEBRV
+Bremen (HB), DE;DEBRV
+Europe;DEBRV
+Germany;DEBRV
+Ports;DEBRV
+Rail Terminals;DEBRV
+Road Terminals;DEBRV
+Seaports;DEBRV
+Airports;USHOU
+North America;USHOU
+Ports;USHOU
+Postal Offices;USHOU
+Seaports;USHOU
+Texas (TX), US;USHOU
+United States;USHOU
+Airports;USAUS
+North America;USAUS
+Road Terminals;USAUS
+Texas (TX), US;USAUS
+United States;USAUS

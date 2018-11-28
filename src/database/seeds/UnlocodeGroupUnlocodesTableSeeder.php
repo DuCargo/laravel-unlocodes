@@ -15,8 +15,7 @@ class UnlocodeGroupUnlocodesTableSeeder extends CsvSeeder
         $this->csv_delimiter = ';';
         $this->mapping = [
             0 => 'groupname',
-            1 => 'countrycode',
-            2 => 'placecode'
+            1 => 'unlocode',
         ];
         $this->insert_chunk_size = 512;
     }

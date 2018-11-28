@@ -38,12 +38,12 @@ class UnlocodeController extends Controller
      * Display the specified UNLOCode.
      * GET    /unlocodes/{unlocode}    show    unlocode.show
      *
-     * @param  Unlocode $unlocode The unlocode object, resolved by route/model binding
+     * @param  Unlocode $cachedUnlocode The unlocode object, resolved by route/model binding
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Unlocode $unlocode)
+    public function show(Unlocode $cachedUnlocode)
     {
-        return response()->json($unlocode);
+        return response()->json($cachedUnlocode);
     }
 
     /**
@@ -156,7 +156,6 @@ class UnlocodeController extends Controller
      */
     public function destroy(Unlocode $unlocode)
     {
-        \Cache::forget(UnlocodeHelper::cacheKey($unlocode->countrycode, $unlocode->placecode));
         $success = $unlocode->delete() === true;
         return \Response::json($success);
     }

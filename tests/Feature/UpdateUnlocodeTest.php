@@ -2,6 +2,7 @@
 
 namespace Dc\Unlocodes\Tests\Feature;
 
+use Dc\Unlocodes\Helpers\UnlocodeHelper;
 use Dc\Unlocodes\Tests\UnlocodeTestCase;
 use Dc\Unlocodes\Unlocode;
 
@@ -52,7 +53,7 @@ class UpdateUnlocodeTest extends UnlocodeTestCase
         $response = $this->updateUnlocode('bad', []);
 
         // Then we should get an error
-        $response->assertStatus(404);
+        $this->assertFalse($response->isSuccessful());
     }
 
     /** @test */
@@ -490,5 +491,25 @@ class UpdateUnlocodeTest extends UnlocodeTestCase
         $response->assertStatus(422);
         $this->assertArrayHasKey('message', $response->json(), "Expected message in error response");
         $this->assertContains('QQQQQ', $response->json()['message'], "Expected unlocode in message");
+    }
+
+    /**
+     * Cache clear is tested here in a Feature test because the route binding does the caching
+     * @test
+     */
+    function cache_is_cleared_after_update()
+    {
+        // Given we have a unlocode and it's cached
+        $unlocode = factory(Unlocode::class)->create();
+        $this->json('GET', "/api/unlocodes/{$unlocode->unlocode}");
+        $this->assertTrue(\Cache::has(UnlocodeHelper::cacheKey($unlocode)));
+        // When we update it
+        $this->updateUnlocode($unlocode->unlocode, [
+            'countrycode' => 'NL',
+            'placecode' => 'RTM',
+            'name' => 'Rotjeknor'
+        ]);
+        // Then the cache is cleared
+        $this->assertFalse(\Cache::has(UnlocodeHelper::cacheKey($unlocode)));
     }
 }

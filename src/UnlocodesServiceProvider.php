@@ -2,8 +2,8 @@
 
 namespace Dc\Unlocodes;
 
-use Dc\Unlocodes\Facades\Unlocode;
 use Dc\Unlocodes\Helpers\UnlocodeHelper;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,22 +19,19 @@ class UnlocodesServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
         Route::bind(
-            'unlocode',
-            function ($value) {
+            'cachedUnlocode',
+            function ($cachedUnlocode) {
                 try {
-                    [$countrycode, $placecode] = UnlocodeHelper::spreadUnlocode($value);
-                    $value = \Cache::rememberForever(
-                        UnlocodeHelper::cacheKey($countrycode, $placecode),
-                        function () use ($countrycode, $placecode) {
-                            return Unlocode::where(
-                                [
-                                'countrycode' => $countrycode,
-                                'placecode' => $placecode,
-                                ]
-                            )->firstOrFail();
+                    return \Cache::rememberForever(
+                        UnlocodeHelper::cacheKey($cachedUnlocode),
+                        function () use ($cachedUnlocode) {
+                            if ($model = $this->app->make(Unlocode::class)->resolveRouteBinding($cachedUnlocode)) {
+                                return $model;
+                            }
+
+                            throw (new ModelNotFoundException)->setModel(Unlocode::class);
                         }
                     );
-                    return $value;
                 } catch (\Exception $e) {
                     return response()->json(['error' => $e->getMessage()], 400);
                 }

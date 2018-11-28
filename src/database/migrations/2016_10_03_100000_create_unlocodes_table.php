@@ -39,6 +39,7 @@ class CreateUnlocodesTable extends Migration
         Schema::create(
             'unlocodes',
             function (Blueprint $table) {
+                $table->string('unlocode', 5);
                 $table->string('countrycode', 2);
                 $table->string('placecode', 3);
                 $table->string('name', 100);
@@ -51,7 +52,8 @@ class CreateUnlocodesTable extends Migration
 
                 $table->timestamps();
 
-                $table->primary(['countrycode', 'placecode']);
+                $table->primary('unlocode');
+                $table->unique(['countrycode', 'placecode'], 'codes');
                 $table->index(['name', 'subdivision', 'countrycode'], 'location');
             }
         );

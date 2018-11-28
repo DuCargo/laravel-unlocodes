@@ -3,9 +3,8 @@
 namespace Dc\Unlocodes;
 
 use Dc\Events\UnlocodeSaved;
-use Illuminate\Database\Eloquent\Builder;
+use Dc\Unlocodes\Helpers\UnlocodeHelper;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -32,34 +31,26 @@ class Unlocode extends Model
 
     protected $guarded = ['status', 'IATA'];
 
-    protected $primaryKey = 'countrycode';
-    protected $primaryKey2 = 'placecode';
+    protected $primaryKey = 'unlocode';
     public $incrementing = false;
 
-    /**
-     * @return string The 5-letter UNLOCODE
-     */
-    public function getUnlocodeAttribute()
+    protected static function boot()
     {
-        return $this->countrycode . $this->placecode;
+        parent::boot();
+
+        self::creating([Unlocode::class, 'refreshUnlocodeFor']);
+        self::updating([Unlocode::class, 'refreshUnlocodeFor']);
+        self::updated([Unlocode::class, 'clearCacheFor']);
+        self::deleted([Unlocode::class, 'clearCacheFor']);
     }
 
-    /**
-     * Set the keys for a save update query using countrycode and placecode.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function setKeysForSaveQuery(Builder $query)
-    {
-        $query->where($this->getKeyName(), '=', $this->getKeyForSaveQuery())
-            ->where(
-                $this->primaryKey2,
-                '=',
-                $this->original[$this->primaryKey2] ?? $this->getAttribute($this->primaryKey2)
-            );
+    static function refreshUnlocodeFor($model) {
+        $model->unlocode = $model->countrycode . $model->placecode;
+    }
 
-        return $query;
+    static function clearCacheFor($model) {
+        /* @noinspection PhpUnhandledExceptionInspection Never occurs with our args */
+        cache()->forget(UnlocodeHelper::cacheKey($model));
     }
 
     /**
@@ -67,23 +58,6 @@ class Unlocode extends Model
      */
     public function groups()
     {
-        $countryCode = $this->countrycode;
-        $placeCode = $this->placecode;
-        // FIXME Resulting query is suboptimal:
-        // SELECT "unlocode_groups".*, "unlocode_group_unlocodes"."countrycode" as "pivot_countrycode", "unlocode_group_unlocodes"."groupname" as "pivot_groupname"
-        //   FROM "unlocode_groups"
-        //   INNER JOIN "unlocode_group_unlocodes" on "unlocode_groups"."name" = "unlocode_group_unlocodes"."groupname"
-        //   INNER JOIN "unlocode_group_unlocodes" as "ugu" on "ugu"."groupname" = "unlocode_groups"."name" and "ugu"."countrycode" = "XX" and "ugu"."placecode" = "XXX"
-        //   WHERE "unlocode_group_unlocodes"."countrycode" = "XX"`
-        return $this->belongsToMany(UnlocodeGroup::class, 'unlocode_group_unlocodes', 'countrycode', 'groupname')
-            ->join(
-                'unlocode_group_unlocodes AS ugu',
-                function (JoinClause $join) use ($countryCode, $placeCode) {
-                    $join
-                        ->on('ugu.groupname', '=', 'unlocode_groups.name')
-                        ->on('ugu.countrycode', '=', $countryCode)
-                        ->on('ugu.placecode', '=', $placeCode);
-                }
-            );
+        return $this->belongsToMany(UnlocodeGroup::class, 'unlocode_group_unlocodes', 'unlocode', 'groupname');
     }
 }

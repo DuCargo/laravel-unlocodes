@@ -21,7 +21,8 @@ class ViewUnlocodeTest extends UnlocodeTestCase
      */
     private function getUnlocode(string $unlocode)
     {
-        return $this->json('GET', "/api/unlocodes/{$unlocode}");
+        return $this->withoutMiddleware([\Illuminate\Routing\Middleware\ThrottleRequests::class])->json('GET', "/api/unlocodes/{$unlocode}");
+//        return $this->json('GET', "/api/unlocodes/{$unlocode}");
     }
 
     /**
@@ -64,10 +65,10 @@ class ViewUnlocodeTest extends UnlocodeTestCase
     /** @test */
     function result_is_being_cached()
     {
-        $this->markTestSkipped('Cache mock doesnt work anymore');
-        // Given we have a unlocode
+        // Given we have a unlocode and it's not cached
         factory(Unlocode::class)->create();
         $object = [
+            'unlocode' => 'NLRTM',
             'countrycode' => 'NL',
             'placecode' => 'RTM',
             'name' => 'Rotterdam',
@@ -78,23 +79,13 @@ class ViewUnlocodeTest extends UnlocodeTestCase
             'date' => '',
             'IATA' => '',
         ];
-
-        // Then below, the cache class should call rememberForever() twice
-        \Cache::spy()
-            ->shouldReceive('rememberForever')
-            ->twice()
-            ->with('unlocode_NLRTM', \Mockery::type('Closure'))
-            ->andReturn($object);
-        // FIXME
-        // And it should call forever() only once (second time it returns from cache)
-//        \Dc\Unlocodes\Facades\Unlocode::shouldReceive('where')
-//            ->once();
-
+        $this->assertFalse(\Cache::has('unlocode_NLRTM'));
         // When we retrieve it
-        $this->getUnlocode('NLRTM');
-        $unlocode = $this->getUnlocode('NLRTM');
-
-        $this->assertEquals($unlocode, $object);
+        $response = $this->getUnlocode('NLRTM');
+        // Then it is cached for later use
+        $this->assertTrue(\Cache::has('unlocode_NLRTM'));
+        $response->assertSuccessful()
+            ->assertJson($object);
     }
 
     /** @test */

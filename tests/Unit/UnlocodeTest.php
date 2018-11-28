@@ -2,8 +2,10 @@
 
 namespace Dc\Unlocodes\Tests\Unit;
 
+use Dc\Unlocodes\Helpers\UnlocodeHelper;
 use Dc\Unlocodes\Unlocode;
 use Dc\Unlocodes\Tests\TestCase;
+use Dc\Unlocodes\UnlocodeGroup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UnlocodeTest extends TestCase
@@ -51,7 +53,7 @@ class UnlocodeTest extends TestCase
     /** @test */
     function unlocode_belongs_to_groups()
     {
-        // Given groups have been seeded and we create an unlocode for NLRTM
+        // Given we create an unlocode for NLRTM and attach it to a group
         $unlocode = factory(Unlocode::class)->create();
         // When we retrieve the groups
         $groups = $unlocode->groups;
@@ -64,5 +66,29 @@ class UnlocodeTest extends TestCase
     {
         $unlocode = factory(Unlocode::class)->create();
         $this->assertEquals('NLRTM', $unlocode->unlocode);
+    }
+
+    /** @test */
+    function unlocode_updated_on_update()
+    {
+        $unlocode = factory(Unlocode::class)->create();
+        $unlocode->update(['countrycode' => 'QQ', 'placecode' => 'QQQ']);
+        $this->assertEquals('QQQQQ', $unlocode->unlocode);
+    }
+
+    /** @test */
+    function cache_cleared_on_delete()
+    {
+        $unlocode = factory(Unlocode::class)->create();
+        \Cache::shouldReceive('forget')->with(UnlocodeHelper::cacheKey($unlocode))->once();
+        $unlocode->delete();
+    }
+
+    /** @test */
+    function cache_cleared_on_update()
+    {
+        $unlocode = factory(Unlocode::class)->create();
+        \Cache::shouldReceive('forget')->with(UnlocodeHelper::cacheKey($unlocode))->once();
+        $unlocode->update(['name' => 'ABC']);
     }
 }

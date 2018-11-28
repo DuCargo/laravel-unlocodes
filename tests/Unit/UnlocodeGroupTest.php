@@ -16,9 +16,9 @@ class UnlocodeGroupTest extends TestCase
         // Given we have our default NLRTM unlocode already seeded and we create a model for it
         factory(Unlocode::class)->create();
         // When we look up the Europe group
-        $europeCodes = UnlocodeGroup::findOrFail('Europe');
+        $europeGroup = UnlocodeGroup::findOrFail('Europe');
         // The NLRTM is contained withing
-        $this->assertEquals('NL', $europeCodes->unlocodes->first()->countrycode);
-        $this->assertEquals('RTM', $europeCodes->unlocodes->first()->placecode);
+        $this->assertEquals('NL', $europeGroup->unlocodes->first()->countrycode);
+        $this->assertEquals('RTM', $europeGroup->unlocodes->first()->placecode);
     }
 }

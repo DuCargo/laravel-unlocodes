@@ -35,12 +35,16 @@ class UnlocodeHelper
     }
 
     /**
-     * @param  string $countrycode
-     * @param  string $placecode
+     * @param  string $unlocodeOrCountrycode
+     * @param  string|null $placecode If first is countrycode
      * @return string The cache key for the given unlocode
      */
-    public static function cacheKey(string $countrycode, string $placecode)
+    public static function cacheKey($unlocodeOrCountrycode, string $placecode = null)
     {
-        return "unlocode_{$countrycode}{$placecode}";
+        $prefix = "unlocode_";
+        if ($unlocodeOrCountrycode instanceof Unlocode) {
+            return "{$prefix}{$unlocodeOrCountrycode->unlocode}";
+        }
+        return "{$prefix}{$unlocodeOrCountrycode}" . $placecode ?? '';
     }
 }
