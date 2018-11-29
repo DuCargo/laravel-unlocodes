@@ -33,7 +33,7 @@ class CreateUnlocodeGroupsTable extends Migration
             }
         );
 
-        Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodeGroupsTableSeeder'));
+//        Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodeGroupsTableSeeder'));
     }
 
     /**

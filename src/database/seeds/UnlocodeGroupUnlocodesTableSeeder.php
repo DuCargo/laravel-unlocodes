@@ -2,16 +2,15 @@
 
 namespace Dc\Unlocodes\Seeds;
 
-use Flynsarmy\CsvSeeder\CsvSeeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 
-class UnlocodeGroupUnlocodesTableSeeder extends CsvSeeder
+class UnlocodeGroupUnlocodesTableSeeder extends DcSeeder
 {
 
     public function __construct()
     {
         $this->table = 'unlocode_group_unlocodes';
-        $this->filename = __DIR__ . '/csvs/unlocode_group_unlocode' . (\App::runningUnitTests() ? '_testing' : '') . '.csv';
+        $this->filename = __DIR__ . '/csvs/unlocode_group_unlocode' . (App::runningUnitTests() ? '_testing' : '') . '.csv';
         $this->csv_delimiter = ';';
         $this->mapping = [
             0 => 'groupname',
@@ -25,12 +24,6 @@ class UnlocodeGroupUnlocodesTableSeeder extends CsvSeeder
      */
     public function run()
     {
-        // Recommended when importing larger CSVs
-        DB::disableQueryLog();
-
-        // Uncomment the below to wipe the table clean before populating
-        // DB::table($this->table)->truncate();
-
         // echo "Seeding UNLOCode groups\n";
         parent::run();
     }

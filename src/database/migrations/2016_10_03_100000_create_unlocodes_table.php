@@ -63,7 +63,7 @@ class CreateUnlocodesTable extends Migration
             DB::statement('ALTER TABLE unlocodes ADD FULLTEXT INDEX full (placecode, name, subdivision, countrycode)');
         }
 
-        Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodesTableSeeder'));
+//        \Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodesTableSeeder'));
     }
 
     /**

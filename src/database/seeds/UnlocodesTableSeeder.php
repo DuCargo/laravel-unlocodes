@@ -2,16 +2,16 @@
 
 namespace Dc\Unlocodes\Seeds;
 
-use Flynsarmy\CsvSeeder\CsvSeeder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
-class UnlocodesTableSeeder extends CsvSeeder
+class UnlocodesTableSeeder extends DcSeeder
 {
 
     public function __construct()
     {
         $this->table = 'unlocodes';
-        $this->filename = __DIR__ . '/csvs/unlocode' . (\App::runningUnitTests() ? '_testing' : '') . '.csv';
+        $this->filename = __DIR__ . '/csvs/unlocode' . (App::runningUnitTests() ? '_testing' : '') . '.csv';
         $this->csv_delimiter = ';';
         $this->mapping = [
             0 => 'countrycode',
@@ -22,8 +22,66 @@ class UnlocodesTableSeeder extends CsvSeeder
             5 => 'subdivision',
             6 => 'status',
             7 => 'date',
-            8 => 'IATA'
+            8 => 'IATA',
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function seedFromCSV($filename, $deliminator = ",")
+    {
+        $handle = $this->openCSV($filename);
+
+        // CSV doesn't exist or couldn't be read from.
+        if ($handle === false) {
+            return [];
+        }
+
+        $header = null;
+        $row_count = 0;
+        $data = [];
+        $mapping = $this->mapping ?: [];
+        $offset = $this->offset_rows;
+
+        while (($row = fgetcsv($handle, 0, $deliminator)) !== false) {
+            // Offset the specified number of rows
+
+            while ($offset > 0) {
+                $offset--;
+                continue 2;
+            }
+
+            $row = $this->readRow($row, $mapping);
+
+            // insert only non-empty rows from the csv file
+            if (!$row) {
+                continue;
+            }
+
+            $row['unlocode'] = $row['countrycode'].$row['placecode'];
+            $data[$row_count] = $row;
+
+            // Chunk size reached, insert
+            if (++$row_count == $this->insert_chunk_size) {
+                $this->insert($data);
+                $row_count = 0;
+                // clear the data array explicitly when it was inserted so
+                // that nothing is left, otherwise a leftover scenario can
+                // cause duplicate inserts
+                $data = array();
+            }
+        }
+
+        // Insert any leftover rows
+        //check if the data array explicitly if there are any values left to be inserted, if insert them
+        if (count($data)) {
+            $this->insert($data);
+        }
+
+        fclose($handle);
+
+        return $data;
     }
 
     /**
@@ -31,13 +89,7 @@ class UnlocodesTableSeeder extends CsvSeeder
      */
     public function run()
     {
-        // Recommended when importing larger CSVs
-        DB::disableQueryLog();
-
-        // Uncomment the below to wipe the table clean before populating
-        //DB::table($this->table)->truncate();
-
         // echo "Seeding UNLOCodes\n";
-        //parent::run();
+        parent::run();
     }
 }

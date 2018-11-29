@@ -40,7 +40,7 @@ class CreateUnlocodeGroupUnlocodesTable extends Migration
             }
         );
 
-        Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodeGroupUnlocodesTableSeeder'));
+//        Artisan::call('db:seed', array('--class' => 'Dc\Unlocodes\Seeds\UnlocodeGroupUnlocodesTableSeeder'));
     }
 
     /**

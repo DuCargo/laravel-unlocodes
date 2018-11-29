@@ -2,13 +2,13 @@
 
 namespace Dc\Unlocodes\Seeds;
 
-use Flynsarmy\CsvSeeder\CsvSeeder;
+use Dc\Unlocodes\Unlocode;
+use Dc\Unlocodes\UnlocodeGroup;
 use frictionlessdata\datapackage\Package;
 use frictionlessdata\datapackage\Resources\DefaultResource;
 
-class UnlocodeDatapackageSeeder extends CsvSeeder
+class UnlocodeDatapackageSeeder extends DcSeeder
 {
-
     /**
      * @var DefaultResource
      */
@@ -17,8 +17,8 @@ class UnlocodeDatapackageSeeder extends CsvSeeder
     public function __construct()
     {
         $this->table = 'unlocodes';
-        $this->offset_rows = 107800;
-        $this->insert_chunk_size = 128;
+        $this->offset_rows = app()->runningUnitTests() ? 109500 : 1;
+        $this->insert_chunk_size = 100;
     }
 
     /**
@@ -39,40 +39,28 @@ class UnlocodeDatapackageSeeder extends CsvSeeder
             }
 
             $row = str_getcsv($rowStr, $deliminator);
-            if ($row === false) {
+            if ($rowStr === false || $row === false) {
                 break;
             }
 
-            // No mapping specified - grab the first CSV row and use it
-            if (!$mapping) {
-                $mapping = $row;
-                $mapping[0] = $this->stripUtf8Bom($mapping[0]);
+            $row = $this->readRow($row, $mapping);
 
-                // skip csv columns that don't exist in the database
-                foreach ($mapping as $index => $fieldname) {
-                    if (!DB::getSchemaBuilder()->hasColumn($this->table, $fieldname)) {
-                        array_pull($mapping, $index);
-                    }
-                }
-            } else {
-                $row = $this->readRow($row, $mapping);
+            // insert only non-empty rows from the csv file
+            if (!$row) {
+                continue;
+            }
 
-                // insert only non-empty rows from the csv file
-                if (!$row) {
-                    continue;
-                }
+            $row['unlocode'] = $row['countrycode'] . $row['placecode'];
+            $data[$row_count] = $row;
 
-                $data[$row_count] = $row;
-
-                // Chunk size reached, insert
-                if (++$row_count == $this->insert_chunk_size) {
-                    $this->insert($data);
-                    $row_count = 0;
-                    // clear the data array explicitly when it was inserted so
-                    // that nothing is left, otherwise a leftover scenario can
-                    // cause duplicate inserts
-                    $data = array();
-                }
+            // Chunk size reached, insert
+            if (++$row_count == $this->insert_chunk_size) {
+                $this->insert($data);
+                $row_count = 0;
+                // clear the data array explicitly when it was inserted so
+                // that nothing is left, otherwise a leftover scenario can
+                // cause duplicate inserts
+                $data = array();
             }
         }
 
@@ -90,12 +78,6 @@ class UnlocodeDatapackageSeeder extends CsvSeeder
      */
     public function run()
     {
-        // Recommended when importing larger CSVs
-        \DB::disableQueryLog();
-
-        // Uncomment the below temporarily to wipe the table clean before populating if needed
-        //\DB::table($this->table)->delete();
-
         $path = dirname(dirname(dirname(__DIR__)));
         $basepath = "{$path}/vendor/datasets/un-locode";
         $package = Package::load("datapackage.json", $basepath);

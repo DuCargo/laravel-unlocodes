@@ -2,7 +2,6 @@
 
 namespace Dc\Unlocodes\Tests\Feature;
 
-use Dc\Unlocodes\Seeds\UnlocodeDatapackageSeeder;
 use Dc\Unlocodes\Tests\UnlocodeTestCase;
 use Dc\Unlocodes\Unlocode;
 
@@ -20,14 +19,6 @@ class CreateUnlocodeTest extends UnlocodeTestCase
     private function createUnlocode(array $params)
     {
         return $this->json('POST', '/api/unlocodes', $params);
-    }
-
-    /** @test */
-    function unlocodes_can_be_seeded()
-    {
-        $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodeDatapackageSeeder::class]);
-        $this->assertLessThanOrEqual(0, $result);
-        $this->assertNotEmpty(Unlocode::where('countrycode', 'ZW'));
     }
 
     /** @test */
