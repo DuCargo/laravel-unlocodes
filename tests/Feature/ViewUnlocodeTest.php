@@ -4,8 +4,6 @@ namespace Dc\Unlocodes\Tests\Feature;
 
 use Dc\Unlocodes\Tests\UnlocodeTestCase;
 use Dc\Unlocodes\Unlocode;
-use Illuminate\Cache\ArrayStore;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ViewUnlocodeTest tests the retrieval, listing and search for/of unlocodes

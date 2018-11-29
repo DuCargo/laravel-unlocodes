@@ -357,5 +357,4 @@ class CreateUnlocodeTest extends UnlocodeTestCase
         // Then we should get a validation error
         $this->assertValidationError($response, 'latitude');
     }
-
 }

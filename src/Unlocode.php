@@ -2,7 +2,6 @@
 
 namespace Dc\Unlocodes;
 
-use Dc\Events\UnlocodeSaved;
 use Dc\Unlocodes\Helpers\UnlocodeHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -44,11 +43,13 @@ class Unlocode extends Model
         self::deleted([Unlocode::class, 'clearCacheFor']);
     }
 
-    static function refreshUnlocodeFor($model) {
+    public static function refreshUnlocodeFor($model)
+    {
         $model->unlocode = $model->countrycode . $model->placecode;
     }
 
-    static function clearCacheFor($model) {
+    public static function clearCacheFor($model)
+    {
         /* @noinspection PhpUnhandledExceptionInspection Never occurs with our args */
         cache()->forget(UnlocodeHelper::cacheKey($model));
     }
@@ -58,6 +59,11 @@ class Unlocode extends Model
      */
     public function groups()
     {
-        return $this->belongsToMany(UnlocodeGroup::class, 'unlocode_group_unlocodes', 'unlocode', 'groupname');
+        return $this->belongsToMany(
+            UnlocodeGroup::class,
+            'unlocode_group_unlocodes',
+            'unlocode',
+            'groupname'
+        );
     }
 }
