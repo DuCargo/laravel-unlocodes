@@ -55,10 +55,11 @@ class UnlocodeTest extends TestCase
     {
         // Given we create an unlocode for NLRTM and attach it to a group
         $unlocode = factory(Unlocode::class)->create();
-        // When we retrieve the groups
-        $groups = $unlocode->groups;
-        // They exist
-        $this->assertNotEmpty($groups);
+        $unlocodeGroup = factory(UnlocodeGroup::class)->create();
+        $unlocodeGroup->unlocodes()->attach($unlocode);
+        // When we retrieve the groups Then they exist
+        $unlocode = Unlocode::find('NLRTM')->with('groups')->firstOrFail();
+        $this->assertEquals(1, $unlocode->groups->count());
     }
 
     /** @test */

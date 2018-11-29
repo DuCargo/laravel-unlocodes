@@ -38,6 +38,7 @@ class CreateUnlocodeTest extends UnlocodeTestCase
         $response->assertStatus(201);
         $this->assertEquals(1, Unlocode::count());
         $unlocode = Unlocode::first();
+        $this->assertEquals('QQQQQ', $unlocode->unlocode);
         $this->assertEquals('QQ', $unlocode->countrycode);
         $this->assertEquals('QQQ', $unlocode->placecode);
         $this->assertEquals('Test code', $unlocode->name);

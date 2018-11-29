@@ -13,12 +13,13 @@ class UnlocodeGroupTest extends TestCase
 
     /** @test */
     function unlocodes_can_be_grouped() {
-        // Given we have our default NLRTM unlocode already seeded and we create a model for it
-        factory(Unlocode::class)->create();
-        // When we look up the Europe group
-        $europeGroup = UnlocodeGroup::findOrFail('Europe');
-        // The NLRTM is contained withing
-        $this->assertEquals('NL', $europeGroup->unlocodes->first()->countrycode);
-        $this->assertEquals('RTM', $europeGroup->unlocodes->first()->placecode);
+        // Given we have an unlocode group
+        $europeGroup = factory(UnlocodeGroup::class)->create();
+        // When we attach two unlocodes to it
+        $europeGroup->unlocodes()->attach(factory(Unlocode::class)->create());
+        $europeGroup->unlocodes()->attach(factory(Unlocode::class)->create(['countrycode' => 'QQ', 'placecode' => 'QQQ']));
+        // Then both can be retrieved through it
+        $europeGroup = UnlocodeGroup::find('Europe')->with('unlocodes')->firstOrFail();
+        $this->assertEquals(2, $europeGroup->unlocodes->count());
     }
 }
