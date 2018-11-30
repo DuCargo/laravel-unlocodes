@@ -51,6 +51,10 @@ class UnlocodeDatapackageSeeder extends DcSeeder
             }
 
             $row['unlocode'] = $row['countrycode'] . $row['placecode'];
+            $row['latitude'] = null;
+            if (!empty($row['longitude'])) {
+                [$row['latitude'], $row['longitude']] = explode(' ', $row['longitude']);
+            }
             $data[$row_count] = $row;
 
             // Chunk size reached, insert
