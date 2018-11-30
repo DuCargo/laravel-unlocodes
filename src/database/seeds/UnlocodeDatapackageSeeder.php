@@ -18,7 +18,7 @@ class UnlocodeDatapackageSeeder extends DcSeeder
     {
         $this->table = 'unlocodes';
         $this->offset_rows = app()->runningUnitTests() ? 109500 : 1;
-        $this->insert_chunk_size = 100;
+        $this->insert_chunk_size = app()->runningUnitTests() ? 99 : 500;
     }
 
     /**
