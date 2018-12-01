@@ -20,7 +20,7 @@ class SeedersTest extends UnlocodeTestCase
     function unlocodes_can_be_seeded_from_local_csv()
     {
         $this->assertEquals(0, Unlocode::count());
-        $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodesTableSeeder::class]);
+        $result = $this->artisan('db:seed', ['--class' => UnlocodesTableSeeder::class]);
         $this->assertLessThanOrEqual(0, $result);
         $this->assertNotEmpty(Unlocode::first()->unlocode);
     }
@@ -29,7 +29,7 @@ class SeedersTest extends UnlocodeTestCase
     function unlocodes_can_be_seeded_with_datapackage()
     {
         $this->assertEquals(0, Unlocode::count());
-        $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodeDatapackageSeeder::class]);
+        $result = $this->artisan('db:seed', ['--class' => UnlocodeDatapackageSeeder::class]);
         $this->assertLessThanOrEqual(0, $result);
         $this->assertNotEmpty(Unlocode::first()->unlocode);
     }
@@ -38,7 +38,7 @@ class SeedersTest extends UnlocodeTestCase
     function unlocode_groups_can_be_seeded_from_local_csv()
     {
         $this->assertEquals(0, UnlocodeGroup::count());
-        $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodeGroupsTableSeeder::class]);
+        $result = $this->artisan('db:seed', ['--class' => UnlocodeGroupsTableSeeder::class]);
         $this->assertLessThanOrEqual(0, $result);
         $this->assertNotEmpty(UnlocodeGroup::first()->name);
     }
@@ -47,11 +47,11 @@ class SeedersTest extends UnlocodeTestCase
     function unlocodes_in_groups_can_be_seeded_from_local_csv()
     {
         // Given we have some unlocodes and groups
-        $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodesTableSeeder::class]);
-        $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodeGroupsTableSeeder::class]);
+        $this->artisan('db:seed', ['--class' => UnlocodesTableSeeder::class]);
+        $result = $this->artisan('db:seed', ['--class' => UnlocodeGroupsTableSeeder::class]);
         $this->assertCount(0, UnlocodeGroup::find('Europe')->unlocodes);
         // When we seed the unlocode groups with unlocodes
-        $result = $this->artisan('db:seed', ['--database' => 'testing', '--class' => UnlocodeGroupUnlocodesTableSeeder::class]);
+        $result = $this->artisan('db:seed', ['--class' => UnlocodeGroupUnlocodesTableSeeder::class]);
         // Then we successfully linked the unlocodes to some groups
         $this->assertLessThanOrEqual(0, $result);
         $this->assertGreaterThan(0, count(UnlocodeGroup::find('Europe')->unlocodes));
