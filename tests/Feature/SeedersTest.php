@@ -35,6 +35,19 @@ class SeedersTest extends UnlocodeTestCase
     }
 
     /** @test */
+    function datapackage_duplicates_are_handled_gracefully()
+    {
+        $this->assertEquals(0, Unlocode::count());
+        (new UnlocodeDatapackageSeeder)->insert([
+            ['name' => 'Rotterdam', 'unlocode' => 'NLRTM', 'countrycode' => 'NL', 'placecode' => 'RTM'],
+            ['name' => 'Rotjeknor', 'unlocode' => 'NLRTM', 'countrycode' => 'NL', 'placecode' => 'RTM'],
+        ]);
+        $unlocode = Unlocode::firstOrFail();
+        $this->assertNotEmpty($unlocode->unlocode);
+        $this->assertEquals('Rotjeknor', $unlocode->aliases->first()->alias);
+    }
+
+    /** @test */
     function unlocode_groups_can_be_seeded_from_local_csv()
     {
         $this->assertEquals(0, UnlocodeGroup::count());

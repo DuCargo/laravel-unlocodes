@@ -3,9 +3,10 @@
 namespace Dc\Unlocodes\Seeds;
 
 use Dc\Unlocodes\Unlocode;
-use Dc\Unlocodes\UnlocodeGroup;
 use frictionlessdata\datapackage\Package;
 use frictionlessdata\datapackage\Resources\DefaultResource;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UnlocodeDatapackageSeeder extends DcSeeder
 {
@@ -77,6 +78,45 @@ class UnlocodeDatapackageSeeder extends DcSeeder
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws \Exception
+     */
+    public function insert(array $seedData)
+    {
+        try {
+            return DB::table($this->table)->insert($seedData);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Create alias for duplicates
+            if (str_contains($e->getMessage(), 'UNIQUE constraint failed')) {
+                return $this->insertOrAlias($seedData);
+            } else {
+                throw $e;
+            }
+        } catch (\Exception $e) {
+            Log::error("CSV insert failed: " . $e->getMessage() . " - CSV " . $this->filename);
+            throw $e;
+        }
+    }
+
+    private function insertOrAlias(array $seedData)
+    {
+        $result = true;
+        foreach ($seedData as $row) {
+            if (!Unlocode::where(['unlocode' => $row['unlocode']])->exists()) {
+                $result = $result && Unlocode::insert($row);
+            } else {
+                $result = $result && !empty(Unlocode::where(['unlocode' => $row['unlocode']])->first()->aliases()->create(
+                        [
+                            'unlocode' => $row['unlocode'],
+                            'alias' => $row['name'],
+                        ]
+                    ));
+            }
+        }
+        return $result;
     }
 
     /**

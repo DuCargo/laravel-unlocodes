@@ -55,6 +55,14 @@ class Unlocode extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function aliases()
+    {
+        return $this->hasMany(UnlocodeAlias::class, 'unlocode');
+    }
+
+    /**
      * The groups that an unlocode belongs to
      */
     public function groups()

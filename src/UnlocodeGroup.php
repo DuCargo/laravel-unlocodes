@@ -3,7 +3,6 @@
 namespace Dc\Unlocodes;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\JoinClause;
 
 /**
  * Class UnlocodeGroup
