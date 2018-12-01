@@ -23,10 +23,18 @@ class UnlocodeDatapackageSeeder extends DcSeeder
     }
 
     /**
-     * {@inheritDoc}
+     * Overridden CsvSeeder method so we can use our normal base class
+     *
+     * @param string $filename Ignored
+     * @param string $deliminator Ignored
+     * @return array|bool
+     * @throws \Exception
      */
     public function seedFromCSV($filename, $deliminator = ",")
     {
+        if (empty($this->resource)) {
+            throw new \Exception('Datapackage resource not defined');
+        }
         $row_count = 0;
         $data = [];
         $mapping = $this->mapping ?: [];
@@ -67,7 +75,7 @@ class UnlocodeDatapackageSeeder extends DcSeeder
                 // clear the data array explicitly when it was inserted so
                 // that nothing is left, otherwise a leftover scenario can
                 // cause duplicate inserts
-                $data = array();
+                $data = [];
             }
         }
 

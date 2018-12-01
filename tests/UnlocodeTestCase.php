@@ -2,7 +2,6 @@
 
 namespace Dc\Unlocodes\Tests;
 
-
 use Dc\Unlocodes\Unlocode;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
