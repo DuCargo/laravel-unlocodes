@@ -23,7 +23,7 @@
     "require": {
         "flynsarmy/csv-seeder": "^1.0.6",
         "illuminate/support": "5.6.*",
-        "frictionlessdata/datapackage": "dev-new-zip-library as 0.1.10",
+        "frictionlessdata/datapackage": "dev-master as 0.1.10",
         "datasets/un-locode": "dev-master"
     },
     "require-dev": {
@@ -44,10 +44,6 @@
                     "reference": "master"
                 }
             }
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/aphofstede/datapackage-php.git"
         }
     ],
     "extra": {
