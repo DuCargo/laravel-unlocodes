@@ -97,12 +97,8 @@ class UnlocodeDatapackageSeeder extends DcSeeder
         try {
             return DB::table($this->table)->insert($seedData);
         } catch (\Illuminate\Database\QueryException $e) {
-            // Create alias for duplicates
-            if (str_contains($e->getMessage(), 'UNIQUE constraint failed')) {
-                return $this->insertOrAlias($seedData);
-            } else {
-                throw $e;
-            }
+            // Try to create alias for duplicates
+            return $this->insertOrAlias($seedData);
         } catch (\Exception $e) {
             Log::error("CSV insert failed: " . $e->getMessage() . " - CSV " . $this->filename);
             throw $e;
@@ -132,7 +128,7 @@ class UnlocodeDatapackageSeeder extends DcSeeder
      */
     public function run()
     {
-        $basepath = "vendor/datasets/un-locode";
+        $basepath = '/Users/alex/src/laravel-unlocodes/vendor/datasets/un-locode';
         $package = Package::load("datapackage.json", $basepath);
         $this->resource = $package->resource("code-list");
 
