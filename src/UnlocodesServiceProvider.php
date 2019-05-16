@@ -33,7 +33,8 @@ class UnlocodesServiceProvider extends ServiceProvider
                         }
                     );
                 } catch (\Exception $e) {
-                    return response()->json(['error' => $e->getMessage()], 400);
+                    $httpBadRequest = 400;
+                    return response()->json(['error' => $e->getMessage()], $httpBadRequest);
                 }
             }
         );

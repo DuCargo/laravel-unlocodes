@@ -10,7 +10,6 @@ namespace Dc\Unlocodes\Facades;
  */
 class Unlocode extends \Illuminate\Support\Facades\Facade
 {
-
     /**
      * {@inheritDoc}
      */

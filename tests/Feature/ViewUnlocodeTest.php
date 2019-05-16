@@ -19,8 +19,8 @@ class ViewUnlocodeTest extends UnlocodeTestCase
      */
     private function getUnlocode(string $unlocode)
     {
-        return $this->withoutMiddleware([\Illuminate\Routing\Middleware\ThrottleRequests::class])->json('GET', "/api/unlocodes/{$unlocode}");
-//        return $this->json('GET', "/api/unlocodes/{$unlocode}");
+        return $this->withoutMiddleware([\Illuminate\Routing\Middleware\ThrottleRequests::class])
+            ->json('GET', "/api/unlocodes/{$unlocode}");
     }
 
     /**
@@ -58,6 +58,16 @@ class ViewUnlocodeTest extends UnlocodeTestCase
                 'placecode' => 'RTM',
                 'name' => 'Rotterdam',
             ]);
+    }
+
+    /** @test */
+    function retrieving_an_unknown_unlocode_throws_an_error()
+    {
+        // When we try to retrieve an unknown unlocode
+        $response = $this->getUnlocode('UNKWN');
+
+        // Then we should get a 404
+        $response->assertNotFound();
     }
 
     /** @test */
