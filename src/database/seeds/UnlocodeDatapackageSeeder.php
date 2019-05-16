@@ -128,7 +128,7 @@ class UnlocodeDatapackageSeeder extends DcSeeder
      */
     public function run()
     {
-        $basepath = '/Users/alex/src/laravel-unlocodes/vendor/datasets/un-locode';
+        $basepath = 'vendor/datasets/un-locode';
         $package = Package::load("datapackage.json", $basepath);
         $this->resource = $package->resource("code-list");
 

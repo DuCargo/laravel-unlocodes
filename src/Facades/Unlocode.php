@@ -7,7 +7,6 @@ namespace Dc\Unlocodes\Facades;
  *
  * @category Laravel Unlocode
  * @package  Dc/Unlocodes
- * @author   Hofstede Software <alex@hofste.de>
  */
 class Unlocode extends \Illuminate\Support\Facades\Facade
 {
