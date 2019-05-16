@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Laravel_Unlocodes" xsi:noNamespaceSchemaLocation="phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Laravel_Unlocodes" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
     <description>The coding standard for Laravel Unlocodes.</description>
 
     <file>./src</file>
@@ -44,7 +44,9 @@
 
     <!-- Ban some functions -->
     <rule ref="Generic.PHP.ForbiddenFunctions">
-        <property name="forbiddenFunctions" type="array" value="sizeof=>count,delete=>unset,print=>echo,is_null=>null,create_function=>null"/>
+        <properties>
+            <property name="forbiddenFunctions" type="array" value="sizeof=>count,delete=>unset,print=>echo,is_null=>null,create_function=>null"/>
+        </properties>
     </rule>
 
     <!-- Private methods MUST not be prefixed with an underscore -->
