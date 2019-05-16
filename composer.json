@@ -58,7 +58,7 @@
     },
     "scripts": {
         "test": "php ./vendor/phpunit/phpunit/phpunit --configuration ./phpunit.xml",
-        "test-coverage": "php ./vendor/phpunit/phpunit/phpunit --configuration ./phpunit.xml --coverage-clover coverage-clover.xml",
+        "test-coverage": "php ./vendor/phpunit/phpunit/phpunit --configuration ./phpunit.xml --coverage-clover coverage/coverage-clover.xml",
         "test-coverage-report": "php ./vendor/phpunit/phpunit/phpunit --configuration ./phpunit.xml --coverage-html 'clover_html'"
     },
     "minimum-stability": "dev",

@@ -10,3 +10,4 @@ composer.lock
 *.iml
 coverage*
 clover_html*
+.coveralls.yml

@@ -1,4 +1,4 @@
-[![buddy pipeline](https://app.buddy.works/ducargo/laravel-unlocodes/pipelines/pipeline/187920/badge.svg?token=689b99bde10170b2056052ffe3d1200a5ed24f57302b2a13e0444bd019b8d469 "buddy pipeline")](https://app.buddy.works/ducargo/laravel-unlocodes/pipelines/pipeline/187920)
+[![buddy pipeline](https://app.buddy.works/ducargo/laravel-unlocodes/pipelines/pipeline/187920/badge.svg?token=689b99bde10170b2056052ffe3d1200a5ed24f57302b2a13e0444bd019b8d469 "buddy pipeline")](https://app.buddy.works/ducargo/laravel-unlocodes/pipelines/pipeline/187920) [![Coverage Status](https://coveralls.io/repos/github/DuCargo/laravel-unlocodes/badge.svg?branch=master)](https://coveralls.io/github/DuCargo/laravel-unlocodes?branch=master)
 
 # About
 Laravel-UNLOCODES is an initiative of the DuCargo rate management and price-finding platform. 
