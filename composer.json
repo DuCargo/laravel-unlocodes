@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "flynsarmy/csv-seeder": "^1.0.6",
+        "flynsarmy/csv-seeder": "^2.0.2",
         "illuminate/support": "5.6.*|5.7.*|5.8.*",
         "frictionlessdata/datapackage": "dev-master as 0.1.10",
         "datasets/un-locode": "dev-master"
