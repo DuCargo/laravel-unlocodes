@@ -21,6 +21,7 @@
         }
     },
     "require": {
+        "php": "^7.4.0|^8.0",
         "flynsarmy/csv-seeder": "^2.0.2",
         "illuminate/support": ">6",
         "frictionlessdata/datapackage": "^1.0.0",
