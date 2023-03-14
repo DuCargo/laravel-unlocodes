@@ -12,7 +12,7 @@ To produce a stable UNLOCode package that can seed a database with the most rece
 We aim to support multiple sources:
 - A custom set of CSV files in our own format
 - A [datapackage.json dataset](https://github.com/datasets/un-locode.git) file as provided by [DataHub](https://datahub.io/core/un-locode)
-- External APIs like [NxtPort](https://github.com/NxtPort/UNLoCodes)
+- External APIs like [NxtPort](https://github.com/NxtPort/API/tree/master/UNLoCodes)
 
 # Installation
 Add to `composer.json`
